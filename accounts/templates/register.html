@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth_style.css' %}">
+<style>
+    .auth-wrapper {
+        background-image: url("{% static 'images/background_reg.jpg' %}");
+    }
+
+    form p {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+    form input, form select, form textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background: #f8fafc;
+    }
+    form label {
+        margin-bottom: 0.5rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block layout_wrapper %}
+<div class="auth-wrapper">
+    <div class="auth-card register-card">
+        <div class="text-center mb-4">
+            <h2 class="auth-title">Create Account</h2>
+            <p class="auth-subtitle">Join our learning community today</p>
+        </div>
+
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ msg.tags }} text-center p-2 mb-3 fade show">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="register-grid">
+                 {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom mt-4">
+                Register Now
+            </button>
+
+            <div class="auth-footer">
+                Already have an account? <a href="{% url 'login' %}">Log In</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

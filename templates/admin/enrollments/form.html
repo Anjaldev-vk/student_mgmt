@@ -1,0 +1,84 @@
+{% extends "layouts/admin_base.html" %}
+
+
+
+{% block extra_css %}
+{{ block.super }}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+
+    .select2-container .select2-selection--single {
+        height: 38px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px !important;
+        padding-left: 12px !important;
+        color: #495057 !important; 
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px !important;
+    }
+    .select2-dropdown {
+        border-color: #ced4da !important;
+    }
+    .select2-search__field {
+        border-radius: 4px !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0 bg-white" style="border-radius: 15px;">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h4 class="mb-0 text-gray-800 font-weight-bold">{{ title }}</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}" class="font-weight-bold text-gray-700">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{% url 'enrollment_list' %}" class="btn btn-light mr-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Enrollment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('select').select2({
+            theme: "default",
+            width: '100%',
+            placeholder: "Select an option",
+            allowClear: true
+        });
+        
+        $('input[type="text"], input[type="email"], input[type="password"], input[type="date"], textarea').addClass('form-control');
+    });
+</script>
+{% endblock %}

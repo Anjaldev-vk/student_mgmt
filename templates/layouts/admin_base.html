@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block layout_wrapper %}
+<div class="dashboard-wrapper">
+    
+    <button class="mobile-toggle" onclick="document.querySelector('.dashboard-sidebar').classList.toggle('active')">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" class="user-profile-img" alt="Profile">
+            {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=fff&color=463c8d&size=150" class="user-profile-img" alt="Profile">
+            {% endif %}
+            <div class="user-name">{{ user.username|title }}</div>
+            <div class="user-role">Administrator</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+
+            <a href="{% url 'student_list' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'student_list' %}active{% endif %}">
+                <i class="fas fa-user-graduate"></i> Students Management
+            </a>
+
+            <a href="{% url 'admin_course_list' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'admin_course_list' %}active{% endif %}">
+                <i class="fas fa-book-open"></i> Courses Management
+            </a>
+
+            <a href="{% url 'enrollment_list' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'enrollment_list' %}active{% endif %}">
+                <i class="fas fa-link"></i> Enrollments
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{% url 'logout' %}" class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="container-fluid">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+</div>
+{% endblock %}

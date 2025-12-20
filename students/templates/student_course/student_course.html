@@ -1,0 +1,64 @@
+{% extends 'layouts/student_base.html' %}
+{% load custom_filters %}
+
+{% block Stu_content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Course Catalog</h1>
+</div>
+
+<div class="row">
+    {% for course in courses %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card shadow h-100">
+            {% if course.course_image %}
+                <img src="{{ course.course_image.url }}" class="card-img-top" alt="{{ course.title }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+                <div class="bg-gray-200 d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-book fa-4x text-gray-400"></i>
+                </div>
+            {% endif %}
+            
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title font-weight-bold">{{ course.title }}</h5>
+                <p class="card-text text-gray-600 mb-2">
+                    <i class="far fa-clock mr-1"></i> {{ course.duration }}
+                </p>
+                <p class="card-text text-gray-700 small flex-grow-1">
+                    {{ course.description|truncatewords:20 }}
+                </p>
+                
+                <div class="mt-3">
+                    {% with status=enrollment_status|get_item:course.id %}
+                        {% if status == 'In Progress' %}
+                             <a href="{% url 'watch_course' course.id %}" class="btn btn-primary btn-block">
+                                <i class="fas fa-play-circle mr-1"></i> Watch Course
+                            </a>
+                        {% elif status == 'Completed' %}
+                             <button class="btn btn-success btn-block" disabled>
+                                <i class="fas fa-check mr-1"></i> Completed
+                            </button>
+                        {% elif status == 'Pending' %}
+                             <button class="btn btn-warning btn-block" disabled>
+                                <i class="fas fa-clock mr-1"></i> Pending
+                            </button>
+                        {% elif status == 'Not Started' %}
+                             <button class="btn btn-info btn-block" disabled>
+                                <i class="fas fa-info-circle mr-1"></i> Not Started
+                            </button>
+                        {% else %}
+                             <a href="{% url 'student_enroll_request' course.id %}" class="btn btn-primary btn-block">
+                                Request Enrollment
+                            </a>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <p class="h5 text-gray-500">No courses available at the moment.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

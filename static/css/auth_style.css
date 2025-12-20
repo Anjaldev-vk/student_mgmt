@@ -1,0 +1,249 @@
+/* Modern E-Learning Auth Style */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #463c8d;
+    --primary-hover: #352c6e;
+    --secondary-color: #f8f9fa;
+    --text-dark: #2d3748;
+    --text-muted: #718096;
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+    --radius-lg: 24px;
+    --radius-md: 12px;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Background Wrapper */
+.auth-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.auth-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(70, 60, 141, 0.4) 0%, rgba(70, 60, 141, 0.1) 100%);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+}
+
+/* Auth Card */
+.auth-card {
+    position: relative;
+    z-index: 2;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    /* Reduced padding */
+    width: 100%;
+    max-width: 450px;
+    box-shadow: var(--shadow-soft);
+    animation: slideUp 0.6s ease-out;
+    /* Removed max-height and overflow to avoid scrolling */
+}
+
+.auth-card.register-card {
+    max-width: 800px;
+    padding: 1.5rem;
+    /* Further reduced padding for register card */
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Typography */
+.auth-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.5rem;
+    /* Further reduced */
+    margin-bottom: 0.25rem;
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 1rem;
+    /* Further reduced */
+    font-size: 0.85rem;
+}
+
+/* Forms */
+.form-floating {
+    position: relative;
+    margin-bottom: 0.75rem;
+    /* Further reduced */
+}
+
+.form-control {
+    background: #f8fafc;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 0.6rem 1rem;
+    /* Further reduced */
+    height: auto;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    background: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(70, 60, 141, 0.1);
+}
+
+.input-group-text {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+}
+
+/* Custom Input Styling matching Login design */
+.custom-input-group {
+    position: relative;
+    margin-bottom: 0.75rem;
+    /* Further reduced */
+}
+
+.custom-input-group input {
+    width: 100%;
+    padding: 8px 15px 8px 45px;
+    /* Further reduced */
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.custom-input-group input:focus {
+    border-color: var(--primary-color);
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(70, 60, 141, 0.1);
+}
+
+.custom-input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.custom-input-group input:focus+i,
+.custom-input-group input:focus~i {
+    color: var(--primary-color);
+}
+
+/* Buttons */
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 8px;
+    /* Further reduced */
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    color: white;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(70, 60, 141, 0.25);
+    color: white;
+}
+
+/* Extras */
+.auth-footer {
+    text-align: center;
+    margin-top: 1rem;
+    /* Further reduced */
+    padding-top: 0.75rem;
+    border-top: 1px solid #edf2f7;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.auth-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.auth-footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.forgot-password {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-password:hover {
+    color: var(--primary-color);
+}
+
+/* Register specific tweaks */
+.register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    /* Further reduced */
+}
+
+@media (max-width: 768px) {
+    .register-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+        margin: 0.5rem;
+        width: 100%;
+        /* Ensure full width on mobile */
+    }
+}

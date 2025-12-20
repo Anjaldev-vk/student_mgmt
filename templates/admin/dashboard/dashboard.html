@@ -1,0 +1,126 @@
+{% extends "layouts/admin_base.html" %}
+{% block content %}
+
+<div class="dashboard-header" style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; color: var(--text-primary);">Hello, {{ user.username|title }}! 👋</h1>
+    <p style="color: var(--text-secondary);">Here's what's happening in your academy today.</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>{{ total_students }}</h3>
+            <p>Total Students</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(70, 60, 141, 0.1); color: var(--brand-color);">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>{{ total_staff }}</h3>
+            <p>Staff Members</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;">
+            <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>{{ total_courses }}</h3>
+            <p>Active Courses</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(255, 165, 2, 0.1); color: #ffa502;">
+            <i class="fas fa-book-open"></i>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>{{ total_enrollments }}</h3>
+            <p>Total Enrollments</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(255, 71, 87, 0.1); color: #ff4757;">
+            <i class="fas fa-chart-line"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 2rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+    <div class="col-lg-8" style="flex: 2; min-width: 300px;">
+        <div class="card" style="background: white; border-radius: 16px; box-shadow: var(--card-shadow); padding: 1.5rem; border: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--text-primary);">Recent Students</h3>
+                <a href="{% url 'student_list' %}" style="color: var(--brand-color); text-decoration: none; font-weight: 500;">View All</a>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #f1f2f6;">
+                            <th style="padding: 1rem 0; color: var(--text-secondary); font-weight: 600;">Name</th>
+                            <th style="padding: 1rem 0; color: var(--text-secondary); font-weight: 600;">Date Joined</th>
+                            <th style="padding: 1rem 0; color: var(--text-secondary); font-weight: 600;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_students %}
+                            {% for student in recent_students %}
+                            <tr style="border-bottom: 1px solid #f1f2f6;">
+                                <td style="padding: 1rem 0;">
+                                    <div style="display: flex; align-items: center;">
+                                        {% if student.profile_picture %}
+                                            <img src="{{ student.profile_picture.url }}" alt="" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; object-fit: cover;">
+                                        {% else %}
+                                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--brand-color-light); color: white; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold;">
+                                                {{ student.username|make_list|first|upper }}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <div style="font-weight: 500; color: var(--text-primary);">{{ student.username|title }}</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-secondary);">{{ student.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem 0; color: var(--text-secondary);">{{ student.date_of_join|date:"M d, Y" }}</td>
+                                <td style="padding: 1rem 0;">
+                                    <span style="background: rgba(46, 213, 115, 0.1); color: #2ed573; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">Active</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                                    No students found yet.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4" style="flex: 1; min-width: 300px;">
+        <div class="card" style="background: var(--brand-color); color: white; border-radius: 16px; box-shadow: var(--card-shadow); padding: 1.5rem; border: none; height: 100%;">
+            <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;">Quick Actions</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="{% url 'student_add' %}" style="background: rgba(255, 255, 255, 0.2); text-decoration: none; color: white; padding: 1rem; border-radius: 12px; display: flex; align-items: center; cursor: pointer; transition: background 0.2s;">
+                    <i class="fas fa-plus-circle" style="margin-right: 10px; font-size: 1.2rem;"></i>
+                    <span style="font-weight: 500;">Add New Student</span>
+                </a>
+                <a href="{% url 'admin_course_add' %}" style="background: rgba(255, 255, 255, 0.2); text-decoration: none; color: white; padding: 1rem; border-radius: 12px; display: flex; align-items: center; cursor: pointer; transition: background 0.2s;">
+                    <i class="fas fa-book-medical" style="margin-right: 10px; font-size: 1.2rem;"></i>
+                    <span style="font-weight: 500;">Create Course</span>
+                </a>
+                <a href="{% url 'enrollment_add' %}" style="background: rgba(255, 255, 255, 0.2); text-decoration: none; color: white; padding: 1rem; border-radius: 12px; display: flex; align-items: center; cursor: pointer; transition: background 0.2s;">
+                    <i class="fas fa-book-medical" style="margin-right: 10px; font-size: 1.2rem;"></i>
+                    <span style="font-weight: 500;">Add Enrollment</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

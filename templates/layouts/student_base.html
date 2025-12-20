@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block layout_wrapper %}
+<div class="dashboard-wrapper">
+
+    <button class="mobile-toggle" onclick="document.querySelector('.dashboard-sidebar').classList.toggle('active')">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" class="user-profile-img" alt="Profile">
+            {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=fff&color=463c8d&size=150" class="user-profile-img" alt="Profile">
+            {% endif %}
+            <div class="user-name">{{ user.get_full_name|default:user.username }}</div>
+            <div class="user-role">Student ID: #000{{ user.id }}</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'student_dashboard' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'student_dashboard' %}active{% endif %}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            
+            <a href="{% url 'student_course' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'student_course' %}active{% endif %}">
+                <i class="fas fa-book"></i> Courses
+            </a>
+            
+            <a href="{% url 'student_profile' %}" 
+               class="nav-link {% if request.resolver_match.url_name == 'student_profile' %}active{% endif %}">
+                <i class="fas fa-user-circle"></i> Profile Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{% url 'logout' %}" class="nav-link" style="color: #ff7675;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="container-fluid">
+            {% block Stu_content %}{% endblock %}
+        </div>
+    </main>
+
+</div>
+{% endblock %}

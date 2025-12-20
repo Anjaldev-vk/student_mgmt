@@ -1,0 +1,65 @@
+{% extends 'layouts/student_base.html' %}
+{% load custom_filters %}
+
+{% block Stu_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">{{ course.title }}</h6>
+                <a href="{% url 'student_course' %}" class="btn btn-sm btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Courses
+                </a>
+            </div>
+            <div class="card-body">
+                {% if enrollment.status == 'In Progress' or enrollment.status == 'Completed' %}
+                    {% with video_id=course.video_link|get_youtube_id %}
+                    {% if video_id %}
+                        <div class="embed-responsive embed-responsive-16by9 mb-4">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video_id }}" allowfullscreen></iframe>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            Video not available or invalid link. 
+                            {% if course.video_link %}
+                            <a href="{{ course.video_link }}" target="_blank">Click here to watch on original site</a>.
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> 
+                        {% if enrollment.status == 'Pending' %}
+                            Your enrollment is pending approval. You cannot watch the content yet.
+                        {% else %}
+                            You must start the course to watch the content. (Status: {{ enrollment.status }})
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <h4 class="small font-weight-bold">Description</h4>
+                <p>{{ course.description }}</p>
+                <div class="mb-3">
+                    <span class="badge badge-info">{{ enrollment.status }}</span>
+                    <span class="text-muted ml-2"><i class="far fa-clock"></i> {{ course.duration }}</span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-end">
+                    {% if enrollment.status == 'In Progress' or enrollment.status == 'Not Started' %}
+                    <a href="{% url 'update_course_status' course.id 'Dropped' %}" class="btn btn-danger mr-2" onclick="return confirm('Are you sure you want to drop this course?');">
+                        <i class="fas fa-times-circle"></i> Drop Course
+                    </a>
+                    
+                    <a href="{% url 'update_course_status' course.id 'Completed' %}" class="btn btn-success">
+                        <i class="fas fa-check-circle"></i> Finish Course
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

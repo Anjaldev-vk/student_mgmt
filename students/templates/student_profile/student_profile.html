@@ -1,0 +1,129 @@
+{% extends 'layouts/student_base.html' %}
+
+{% block Stu_content %}
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">My Profile</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="mb-3">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" class="rounded-circle img-fluid border" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
+                            {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=fff&color=463c8d&size=150" class="rounded-circle img-fluid border" style="width: 150px; height: 150px;" alt="Profile Picture">
+                            {% endif %}
+                        </div>
+                        <h4 class="font-weight-bold">{{ user.get_full_name|default:user.username }}</h4>
+                        <p class="text-muted">Student</p>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        {% if edit_mode %}
+                        <!-- Edit Form -->
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.username }}">
+                                    <small class="text-muted">Username cannot be changed</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" name="email" class="form-control" value="{{ form.email.value|default:'' }}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="phone" class="form-control" value="{{ form.phone.value|default:'' }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Date of Birth</label>
+                                <div class="col-sm-9">
+                                    <input type="date" name="date_of_birth" class="form-control" value="{{ form.date_of_birth.value|date:'Y-m-d'|default:'' }}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Profile Picture</label>
+                                <div class="col-sm-9">
+                                    <input type="file" name="profile_picture" class="form-control-file">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Date Joined</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.date_joined|date:'F j, Y' }}">
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <div class="text-right">
+                                <a href="{% url 'student_profile' %}" class="btn btn-secondary mr-2">Cancel</a>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-save fa-sm text-white-50"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                        {% else %}
+                        <!-- Read Only View -->
+                        <form>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.username }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.email }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.phone|default:'-' }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Date of Birth</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.date_of_birth|date:'F j, Y'|default:'-' }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label font-weight-bold">Date Joined</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class="form-control-plaintext" value="{{ user.date_joined|date:'F j, Y' }}">
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <div class="text-right">
+                                <a href="?edit=true" class="btn btn-primary">
+                                    <i class="fas fa-edit fa-sm text-white-50"></i> Change Your Profile
+                                </a>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
